@@ -1,10 +1,13 @@
+from typing import Union
 from selenium import webdriver
-from flask import Flask, request
+#from flask import Flask, request
+from fastapi import FastAPI, Query
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
-app = Flask(__name__)
+#app = Flask(__name__)
+app = FastAPI()
 
 def download_selenium():
     chrome_options = webdriver.ChromeOptions()
@@ -18,10 +21,16 @@ def download_selenium():
     data = {'Page Title': title, 'City': city}
     return data
 
-@app.route('/', methods= ['GET','POST'])
+
+@app.get("/data")
+async def get_data():
+    return download_selenium()
+
+
+"""@app.route('/', methods= ['GET','POST'])
 def home():
     if (request.method == 'GET'):
-        return download_selenium()
+        return download_selenium()"""
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
